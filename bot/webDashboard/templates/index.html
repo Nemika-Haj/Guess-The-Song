@@ -1,2 +1,59 @@
 {% extends 'base.html' %}
 
+{% block content %}
+
+<style>
+
+.headerText {
+    color: white;
+}
+
+.container {
+    margin-top:10px;
+    max-width: 700px;
+}
+
+.infoBox { 
+    margin-top: 20px;
+    margin-bottom: 20px;
+    transition: 0.3s transform;
+}
+
+.avatars {
+    height: 100px;
+}
+
+.infoBox:hover {
+    transform: scale(1.03);
+}
+
+.stats {
+    transform: translate(150px, -70px);
+}
+
+.stats > span {
+    transform: translate(300px, -40px);
+}
+
+</style>
+
+<div class="container">
+
+    <h1 class="text-center headerText">Music Leaderboard</h1>
+
+    {% for user in users %}
+
+    <div class="position-relative bg-dark bg-gradient infoBox rounded-pill align-items-start">
+        <img draggable=false src="{{user['avatar']}}" class="col rounded-pill img-thumbnail img-fluid avatars">
+        <div class="row headerText position-absolute stats">
+            <h3 class="col">Level: {{user['level']}}</h3>
+            <h3 class="col">EXP: {{user['xp']}}</h3>
+            <span><h3 class="col">#{{users.index(user)+1}}</h3></span>
+        </div>
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

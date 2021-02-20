@@ -2,7 +2,7 @@ import discord, youtube_dl, asyncio, json, random
 
 from youtube_search import YoutubeSearch
 
-from core import checks, embeds, files
+from core import checks, embeds, files, database
 
 from discord.ext import tasks
 
@@ -55,12 +55,18 @@ class YTDLSource(discord.PCMVolumeTransformer):
 class Music(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.playing = []
 
     def similar(self, s_1, s_2): return SequenceMatcher(None, s_1, s_2).ratio() > 0.6
 
     @commands.guild_only()
     @commands.command()
     async def play(self, ctx):
+        if ctx.author.voice in self.playing: return await ctx.send(embed=embeds.Embeds("Already playing!").error())
+
+        if ctx.voice_client.is_playing():
+            ctx.voice_client.stop()
+
         song = random.choice(files.Data("songs").json_read())
 
         player = await YTDLSource.from_url(song, loop=self.bot.loop)
@@ -75,6 +81,8 @@ class Music(commands.Cog):
             color=discord.Color.green()
         ))
 
+        self.playing.append(ctx.author.voice)
+
         try:
             answer = await self.bot.wait_for(
                 "message",
@@ -83,6 +91,7 @@ class Music(commands.Cog):
             )
 
         except asyncio.TimeoutError:
+            self.playing.remove(ctx.author.voice)
             await ctx.voice_client.disconnect()
             return await ctx.send(embed=discord.Embed(
                 title="Song is over!",
@@ -92,7 +101,8 @@ class Music(commands.Cog):
             )
             .set_thumbnail(url=player.data['thumbnail']))
 
-        await ctx.voice_client.disconnect()
+        database.Levels(answer.author.id).add_xp()
+        self.playing.remove(ctx.author.voice)
         return await ctx.send(embed=discord.Embed(
                 title="Congratulations!",
                 description=f"{answer.author.mention} guessed the song! It was `{player.title}`!",

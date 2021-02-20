@@ -19,7 +19,7 @@ class Levels(commands.Cog):
 
         return await ctx.send(embed=discord.Embed(
             title="Level Profile!",
-            description=f"You are currently Level {profile['level']} with {profile['exp']} experience",
+            description=f"You are currently Level {profile['level']} with {profile['xp']} experience",
             color=discord.Color.green()
         ))
 

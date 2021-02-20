@@ -22,16 +22,16 @@ class Levels:
     def get(self):
         return self.levels.find_one({"_id": self.user})
 
-    def add_xp(self, xp):
+    def add_xp(self, xp=1):
         self.levels.update_one({"_id": self.user}, {"$inc": {"xp": xp}})
     
-    def add_level(self, level):
+    def add_level(self, level=1):
         self.levels.update_one({"_id": self.user}, {"$inc": {"level": level}})
 
-    def remove_xp(self, xp):
+    def remove_xp(self, xp=1):
         self.levels.update_one({"_id": self.user}, {"$inc": {"xp": -xp}})
     
-    def remove_level(self, level):
+    def remove_level(self, level=1):
         self.levels.update_one({"_id": self.user}, {"$inc": {"level": -level}})
 
     def set(self, **kwargs):

@@ -1,4 +1,4 @@
-import pymongo as MongoClient
+from pymongo import MongoClient
 from .files import Data
 
 config = Data("config").yaml_read()
@@ -7,10 +7,10 @@ client = MongoClient(config["mongo-uri"])
 
 class Levels:
     def __init__(self, user_id):
-        self.levels = client["main"]["levels"]
+        self.levels = client["jam"]["levels"]
         self.user = user_id
-        if exists() == False:
-            add_user()
+        if self.exists() == False:
+            self.add_user
 
     @property
     def add_user(self):

@@ -1,5 +1,5 @@
-from flask import Flask, redirect, url_for
-from ..core.database import Levels
+from flask import Flask, redirect, url_for, render_template
+from core.database import Levels
 
 app = Flask(__name__)
 
@@ -16,4 +16,4 @@ def viewProfile(userID):
         return render_template('view.html', Levels(int(userID)).get())
 
 def run():
-    app.run(debug=True)
+    app.run()

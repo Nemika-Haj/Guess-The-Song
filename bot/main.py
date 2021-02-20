@@ -120,6 +120,6 @@ for folder in dirs:
       except Exception as e:
           print(f"######\nFailed to load {folder}.{file}: {e}\n######")
 
-server.start()
+server.debug()
 
 bot.run(config["token"])

@@ -6,26 +6,33 @@ config = Data("config").yaml_read()
 client = MongoClient(config["mongo-uri"])
 
 class Levels:
-    def __init__(self):
+    def __init__(self, user_id):
         self.levels = client["main"]["levels"]
-    
-    def add_user(self, user_id):
-        self.levels.insert_one({"_id":user_id, "xp":0, "level":0})
-    
-    def get(self, user_id):
-        self.levels.find_one({"_id": user_id})
+        self.user = user_id
+        if exists() == False:
+            add_user()
 
-    def add_xp(self, user_id, xp):
-        self.levels.update_one({"_id": user_id}, {"$inc": {"xp": xp}})
-    
-    def add_level(self, user_id, level):
-        self.levels.update_one({"_id": user_id}, {"$inc": {"level": level}})
+    @property
+    def add_user(self):
+        self.levels.insert_one({"_id":self.user, "xp":0, "level":0})
 
-    def remove_xp(self, user_id, xp):
-        self.levels.update_one({"_id": user_id}, {"$inc": {"xp": -xp}})
+    def exists(self):
+        return self.levels.find({'_id': self.user}).count() > 0
     
-    def remove_level(self, user_id, level):
-        self.levels.update_one({"_id": user_id}, {"$inc": {"level": -level}})
+    def get(self):
+        return self.levels.find_one({"_id": self.user})
 
-    def set(self, user_id, **kwargs):
-        self.levels.update_one({"_id": user_id}, kwargs)
+    def add_xp(self, xp):
+        self.levels.update_one({"_id": self.user}, {"$inc": {"xp": xp}})
+    
+    def add_level(self, level):
+        self.levels.update_one({"_id": self.user}, {"$inc": {"level": level}})
+
+    def remove_xp(self, xp):
+        self.levels.update_one({"_id": self.user}, {"$inc": {"xp": -xp}})
+    
+    def remove_level(self, level):
+        self.levels.update_one({"_id": self.user}, {"$inc": {"level": -level}})
+
+    def set(self, **kwargs):
+        self.levels.update_one({"_id": self.user}, kwargs)

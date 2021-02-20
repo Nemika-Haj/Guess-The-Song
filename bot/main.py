@@ -7,6 +7,8 @@ from core import checks
 
 from discord.ext import commands
 
+from webDashboard import server
+
 config = Data("config").yaml_read()
 
 intents = discord.Intents.default()
@@ -117,5 +119,7 @@ for folder in dirs:
           print(f"Loaded {file}")
       except Exception as e:
           print(f"######\nFailed to load {folder}.{file}: {e}\n######")
+
+server.start()
 
 bot.run(config["token"])

@@ -1,4 +1,5 @@
 import discord
+
 from core.database import Levels as leveldb
 from core import embeds
 
@@ -15,8 +16,6 @@ class Levels(commands.Cog):
 
         db = leveldb(user.id)
         profile = db.get()
-
-        if not profile: return await ctx.send(embed=embeds.Embeds(f"{user.mention} has no level yet! Play some games to start!").error())
 
         return await ctx.send(embed=discord.Embed(
             title="Level Profile!",

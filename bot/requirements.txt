@@ -1,0 +1,7 @@
+youtube_dl
+discord
+discord.py
+youtube_search
+PyYAML
+pymongo
+dnspython

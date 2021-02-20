@@ -4,6 +4,26 @@
 
 <style>
 
+body {
+    user-select: none;
+}
+
+::-webkit-scrollbar {
+    width: 5px
+}
+
+::-webkit-scrollbar-button {
+    display: none;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #3429a8;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #17153a;
+}
+
 .headerText {
     color: white;
 }
@@ -35,6 +55,10 @@
     transform: translate(300px, -40px);
 }
 
+.rank {
+    margin-right: 10px;
+}
+
 </style>
 
 <div class="container">
@@ -43,14 +67,39 @@
 
     {% for user in users %}
 
-    <div class="position-relative bg-dark bg-gradient infoBox rounded-pill align-items-start">
+    <a href="{{url_for('viewProfile', userID=user['_id'])}}"><div class="position-relative bg-dark bg-gradient infoBox rounded-pill align-items-start">
+        {% if users.index(user) == 0 %}
+        <img draggable=false src="{{user['avatar']}}" class="col rounded-pill img-fluid avatars border border-5 border-warning">
+
+        {% elif users.index(user) == 1 %}
+        <img draggable=false src="{{user['avatar']}}" class="col rounded-pill img-fluid border border-5 border-danger avatars">
+
+        {% elif users.index(user) == 2 %}
+        <img draggable=false src="{{user['avatar']}}" class="col rounded-pill img-fluid avatars border border-5 border-success avatars">
+
+        {% else %}
         <img draggable=false src="{{user['avatar']}}" class="col rounded-pill img-thumbnail img-fluid avatars">
+
+        {% endif %}
         <div class="row headerText position-absolute stats">
             <h3 class="col">Level: {{user['level']}}</h3>
             <h3 class="col">EXP: {{user['xp']}}</h3>
-            <span><h3 class="col">#{{users.index(user)+1}}</h3></span>
+            <span></span>
         </div>
-    </div>
+            {% if users.index(user) == 0 %}
+                <h1 class="rank btn btn-warning position-absolute translate-middle-y top-50 end-0">#{{users.index(user)+1}}</h1>
+
+            {% elif users.index(user) == 1 %}
+            <h1 class="rank btn btn-danger position-absolute translate-middle-y top-50 end-0">#{{users.index(user)+1}}</h1>
+
+            {% elif users.index(user) == 2 %}
+            <h1 class="rank btn btn-success position-absolute translate-middle-y top-50 end-0">#{{users.index(user)+1}}</h1>
+
+            {% else %}
+            <h1 class="rank btn btn-primary position-absolute translate-middle-y top-50 end-0">#{{users.index(user)+1}}</h1>
+
+            {% endif %}
+    </div></a>
 
     {% endfor %}
 

@@ -91,7 +91,7 @@ class Music(commands.Cog):
             answer = await self.bot.wait_for(
                 "message",
                 timeout=player.data['duration'],
-                check=lambda message: self.similar(message.content.lower(), title)
+                check=lambda message: self.similar(message.content.lower(), title) or (message.content.lower() == "forcestop" and message.author.id == ctx.author.id)
             )
 
         except asyncio.TimeoutError:
@@ -100,6 +100,17 @@ class Music(commands.Cog):
             return await ctx.send(embed=discord.Embed(
                 title="Song is over!",
                 description=f"Nobody guessed the song! It was `{player.title}`!",
+                color=discord.Color.red(),
+                url=player.data['webpage_url']
+            )
+            .set_thumbnail(url=player.data['thumbnail']))
+
+        if answer.content.lower() == "forcestop":
+            self.playing.remove(ctx.author.voice)
+            await ctx.voice_client.disconnect()
+            return await ctx.send(embed=discord.Embed(
+                title="Force Stop!",
+                description=f"The song was force stopped! It was `{player.title}`!",
                 color=discord.Color.red(),
                 url=player.data['webpage_url']
             )

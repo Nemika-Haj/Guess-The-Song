@@ -62,6 +62,7 @@ class Music(commands.Cog):
     @commands.guild_only()
     @commands.command()
     async def play(self, ctx, *, category="random"):
+        if not ctx.author.voice: return
         if ctx.author.voice in self.playing: return await ctx.send(embed=embeds.Embeds("Already playing!").error())
 
         categories = [i[:-5] for i in os.listdir("data") if i.endswith(".json")]
@@ -130,7 +131,7 @@ class Music(commands.Cog):
     async def ensure_voice(self, ctx):
         if not ctx.voice_client:
             if not ctx.author.voice:
-                return await ctx.send(embed=embeds.Embeds("You must be connected in a voice channel!"))
+                return await ctx.send(embed=embeds.Embeds("You must be connected in a voice channel!").error())
             else:
                 await ctx.author.voice.channel.connect()
 

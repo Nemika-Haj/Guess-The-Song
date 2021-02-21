@@ -1,4 +1,4 @@
-import discord, os, textwrap, io, traceback
+import discord, os, textwrap, io, traceback, datetime
 
 from contextlib import redirect_stdout
 
@@ -14,11 +14,12 @@ config = Data("config").yaml_read()
 intents = discord.Intents.default()
 intents.members = True
 
-bot = commands.Bot(command_prefix=config["prefix"], case_insensitive=True, help_command=None, intents=intents)
+bot = commands.Bot(command_prefix=config["prefix"], activity=discord.Activity(type=discord.ActivityType.listening, name="a lot of songs 🎶 | g!help"),case_insensitive=True, help_command=None, intents=intents)
 
 @bot.event
 async def on_ready():
     print("Bot is ready!")
+    bot.startTime = datetime.datetime.now()
 
 @checks.manager()
 @bot.command(aliases=["e"])

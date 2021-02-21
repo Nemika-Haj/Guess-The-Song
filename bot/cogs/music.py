@@ -1,4 +1,4 @@
-import discord, youtube_dl, asyncio, json, random
+import discord, youtube_dl, asyncio, json, random, os
 
 from youtube_search import YoutubeSearch
 
@@ -61,13 +61,17 @@ class Music(commands.Cog):
 
     @commands.guild_only()
     @commands.command()
-    async def play(self, ctx):
+    async def play(self, ctx, *, category="random"):
         if ctx.author.voice in self.playing: return await ctx.send(embed=embeds.Embeds("Already playing!").error())
+
+        categories = [i[:-5] for i in os.listdir("data") if i.endswith(".json")]
+
+        if not category.lower() in categories: return await ctx.send(embed=embeds.Embeds("There's no such category! The available categories are; " + ','.join(f"`{i}`" for i in categories)).error())
 
         if ctx.voice_client.is_playing():
             ctx.voice_client.stop()
 
-        song = random.choice(files.Data("songs").json_read())
+        song = random.choice(files.Data(category).json_read())
 
         player = await YTDLSource.from_url(song, loop=self.bot.loop)
 
@@ -77,7 +81,7 @@ class Music(commands.Cog):
 
         await ctx.send(embed=discord.Embed(
             title="Guess The Song!",
-            description="Now playing track! Try to guess the song before it's over!",
+            description=f"Now playing track! Try to guess the song before it's over!\n*`Mode: {category}`*",
             color=discord.Color.green()
         ))
 

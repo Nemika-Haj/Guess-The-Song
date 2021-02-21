@@ -67,7 +67,7 @@ body {
 
     {% for user in users %}
 
-    <a href="{{url_for('viewProfile', userID=user['_id'])}}"><div class="position-relative bg-dark bg-gradient infoBox rounded-pill align-items-start">
+    <div class="position-relative bg-dark bg-gradient infoBox rounded-pill align-items-start">
         {% if users.index(user) == 0 %}
         <img draggable=false src="{{user['avatar']}}" class="col rounded-pill img-fluid avatars border border-5 border-warning">
 
@@ -99,7 +99,7 @@ body {
             <h1 class="rank btn btn-primary position-absolute translate-middle-y top-50 end-0">#{{users.index(user)+1}}</h1>
 
             {% endif %}
-    </div></a>
+    </div>
 
     {% endfor %}
 

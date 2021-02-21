@@ -5,18 +5,13 @@ from core.api import avatar
 
 app = Flask(__name__)
 
-@app.route("/")
-def index():
-    
-    return render_template("index.html", users=sorted(Levels().get_all(), key=lambda k:k['level'], reverse=True))
+@app.errorhandler(404)
+def _404Handler():
+    return redirect(url_for('index'))
 
-@app.route("/view/", defaults={"userID":None})
-@app.route("/view/<userID>")
-def viewProfile(userID):
-    if not userID:
-        return redirect(url_for('index'))
-    else:
-        return render_template('view.html', user=Levels(int(userID)).get())
+@app.route("/")
+def index(): 
+    return render_template("index.html", users=sorted(Levels().get_all(), key=lambda k:k['level'], reverse=True))
 
 def run():
     app.run()

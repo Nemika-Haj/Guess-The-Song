@@ -46,6 +46,6 @@ class Levels:
     def check_levelup(self):
         data = self.get()
         
-        if data['xp'] >= data['level']*10:
+        if data['xp'] >= data['level']*3:
             self.add_level()
             self.set(xp=0)

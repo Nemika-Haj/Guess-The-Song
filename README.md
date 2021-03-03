@@ -2,7 +2,7 @@
 > A Discord Game Bot where you must guess the name of the song playing! Doing so will give you exp. You can level up and become the ***Master guesser***!
 
 ## Configuring
-To run the bot, you should create a `config.yml` file first. Create one inside the `bot/data` file. Make sure it is enabled exactly like it should (`config.yml`). Then, replace the following content with the required information and paste into the file.
+To run the bot, you should create a `config.yml` file first. Create one inside the `bot/data` folder. Make sure it is named exactly like it should (`config.yml`). Then, replace the following content with the required information and paste into the file.
 ```yaml
 managers:
 - 219567539049594880
